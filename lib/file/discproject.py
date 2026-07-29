@@ -4,7 +4,7 @@ from pathlib import Path
 from sys import path
 
 from lib.disc.burner import burn_iteration
-from lib.misc.configs import project_dir, disc_dir
+from lib.misc.configs import project_dir, disc_dir, parsed_version
 from lib.file.discinstance import DiscInstance
 from lib.file.baseproject import BaseProjectFile
 
@@ -14,6 +14,7 @@ class DiscProject(BaseProjectFile):
     extension = ".dproject"
     cextension = ".cdproject"
     template_metadata = {
+        "app_version": parsed_version,
         "disc_instances": []
     }
 

@@ -1,0 +1,30 @@
+{
+  "version": [
+    0,
+    0,
+    1,
+    "alpha"
+  ],
+  "file_formats": {
+    ".disc": {
+      "is_compressed": false,
+      "description": "CD Instance",
+      "counterpart": ".cdisc"
+    },
+    ".cdisc": {
+      "is_compressed": true,
+      "description": "Compressed CD Instance",
+      "counterpart": ".disc"
+    },
+    ".dproject": {
+      "is_compressed": false,
+      "description": "CD Project",
+      "counterpart": ".cdproject"
+    },
+    ".cdproject": {
+      "is_compressed": true,
+      "description": "Compressed CD Project",
+      "counterpart": ".dproject"
+    }
+  }
+}

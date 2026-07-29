@@ -6,7 +6,7 @@ import lib.disc.cdrecord as drives
 from lib.file.toc_generator import generate_toc
 from lib.file.baseproject import BaseProjectFile
 from lib.misc.cdexcept import NoAudioSource
-from lib.misc.configs import disc_dir
+from lib.misc.configs import disc_dir, parsed_version
 
 
 class DiscInstance(BaseProjectFile):
@@ -14,6 +14,7 @@ class DiscInstance(BaseProjectFile):
     extension = ".disc"
     cextension = ".cdisc"
     template_metadata = {
+        "app_version": parsed_version,
         "sessions": {
             "audio": {
                 "filename": None,
