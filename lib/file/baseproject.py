@@ -7,7 +7,7 @@ from os import makedirs
 from pathlib import Path
 from typing import Self
 
-from lib.misc.configs import config, fileformats, project_dir, disc_dir
+from lib.misc.configs import config, fileformats, project_dir, disc_dir, parsed_version
 
 # TODO where should the UI object be created?
 import lib.ui.uilib as uilib
@@ -205,6 +205,9 @@ class BaseProjectFile(ABC):
         # print(self.project_path, self.original_path, self.is_compressed)
 
         self.metadata = json.load(open(str(self.project_path.resolve() / "project_metadata.json"), 'r'))
+        # TODO make so that the app can say if the version is too new or too old
+        if self.metadata['app_version'] != parsed_version:
+            raise RuntimeError(f"This project was created in a different version of the app (current app: {parsed_version}, expected: {self.metadata['app_version']})")
 
         # FORMAT SPECIFIC
         self._import_metadata()

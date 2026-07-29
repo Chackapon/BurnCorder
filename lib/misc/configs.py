@@ -1,13 +1,12 @@
-import json
+import json, yaml
 from pathlib import Path
 
-import yaml
-config = yaml.safe_load(open("/Users/mati/PycharmProjects/ConcertRecordBurner/config.yaml"))
+config = yaml.safe_load(open("/Users/mati/PycharmProjects/BurnCorder/config.yaml"))
 
 project_dir = Path(config["PROJECTS_DIR"])
 disc_dir = Path(config["DISC_INSTANCES_DIR"])
 
-app_metadata = json.load(open("/Users/mati/PycharmProjects/ConcertRecordBurner/lib/misc/app_metadata.json"))
+app_metadata = json.load(open("/Users/mati/PycharmProjects/BurnCorder/lib/misc/app_metadata.json"))
 fileformats = app_metadata["file_formats"]
 
 app_version = app_metadata["version"]
