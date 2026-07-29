@@ -1,28 +1,14 @@
-import glob
-import os, shutil, subprocess, json
-import sys
-import zipfile
+import shutil, subprocess
 from os import makedirs
 from pathlib import Path
-from tkinter.filedialog import asksaveasfile
 
-import yaml
-
-import lib.disc.drives as drives
-import lib.file.toc_generator as toc_generator
-import lib.disc.disclib as disclib
-# from lib.ui.uilib import *
+import lib.disc.cdrecord as drives
+from lib.file.toc_generator import generate_toc
+from lib.file.baseproject import BaseProjectFile
 from lib.misc.cdexcept import NoAudioSource
 from lib.misc.configs import disc_dir
-# from filewrapper import FileWrapper
-from lib.file.baseproject import BaseProjectFile
-from lib.ui.uilib import Popup
 
 
-# from lib import meow
-
-
-# from lib.meow import config
 class DiscInstance(BaseProjectFile):
     # Class attributes
     extension = ".disc"
@@ -134,10 +120,11 @@ class DiscInstance(BaseProjectFile):
         return iso_file
 
     def burn_cd(self):
+        # TODO should this fucking be in cd object or in tray idfk
         if self.metadata['sessions']['audio']['filename'] is None:
             raise NoAudioSource()
         # build toc file
-        toc_file = toc_generator.generate_toc(self)
+        toc_file = generate_toc(self)
         if self.is_multisession:
             # TODO consider replacing with a dedicated logging system
             print("> Burning Enchanced CD")
@@ -170,28 +157,6 @@ class DiscInstance(BaseProjectFile):
 
         print("> Finished burning")
 
-    def verify_cd(self, tray: disclib.DiscTray):
-        # TODO move to another class
-        #  * challenge: either create new listener, pass existing disctray as argument
-        #  * or move this function to DiscTray class and pass the project as an argument
-
-        sessions = tray.sessions()
-        tracks = tray.tracks()
-
-        # TODO implement custom exceptions
-        if sessions != len(self.metadata["sessions"]):
-            raise RuntimeError(
-                f"CD Verification Error: wrong number of sessions (expected={len(self.metadata["sessions"])}, got={sessions})")
-
-        tracklist_len = len(self.metadata["sessions"]["audio"]["tracklist"])
-        if self.is_multisession:
-            if tracks != tracklist_len + 1:
-                raise RuntimeError(
-                    f"CD Verification Error: wrong number of tracks (multi session, expected={tracklist_len}, got={tracks})")
-        else:
-            if tracks != tracklist_len:
-                raise RuntimeError(
-                    f"CD Verification Error: wrong number of tracks (single session, expected={tracklist_len}, got={tracks})")
 
 # class DiscInstance:
 #     project_path: Path
