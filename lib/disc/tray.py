@@ -1,10 +1,7 @@
-import pty
-import threading
-import subprocess
-import os
-
+import pty, subprocess, threading, os
 import select
 from abc import ABC, abstractmethod
+
 from lib.file.discinstance import DiscInstance
 
 

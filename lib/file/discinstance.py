@@ -2,7 +2,8 @@ import shutil, subprocess
 from os import makedirs
 from pathlib import Path
 
-import lib.disc.cdrecord as drives
+# import lib.disc.cdrecord as drives
+from lib.disc.cdrecord import msinfo, call_cdrecord, get_optical_drives_bus
 from lib.file.toc_generator import generate_toc
 from lib.file.baseproject import BaseProjectFile
 from lib.misc.cdexcept import NoAudioSource
@@ -67,7 +68,7 @@ class DiscInstance(BaseProjectFile):
     def add_audio_sources(self, src_dir_path):
         pass
         # TODO combine tracks into one and then put it into assets
-        # TODO generatе timestamps file
+        # TODO generate timestamps file
 
     # TODO just to the setlist, or also the audio track?
     def add_track(self):
@@ -91,7 +92,7 @@ class DiscInstance(BaseProjectFile):
     def build_iso(self):
         # TODO write ms_info into metadata
         # IDEA maybe each time check if ms_info changes and only then rebuild iso
-        ms_info = drives.msinfo().decode("utf-8").splitlines()[-1]
+        ms_info = msinfo().decode("utf-8").splitlines()[-1]
         metadata_ms_info = self.metadata["sessions"]['data']['msinfo']
         if ms_info == metadata_ms_info:
             pass
@@ -143,9 +144,9 @@ class DiscInstance(BaseProjectFile):
             # TODO randomizable isos?
 
             # burn data
-            burner_dev = drives.get_optical_drives_bus()[0]
+            burner_dev = get_optical_drives_bus()[0]
             print("> Burning Data session...")
-            drives.call_cdrecord(
+            call_cdrecord(
                 f"dev={burner_dev}",
                 "-v", "-tao", "-data",
                 iso_file.resolve()
@@ -191,7 +192,7 @@ if __name__ == "__main__":
     cd.add_audio_source(Path("/Users/mati/PycharmProjects/ConcertRecordBurner/discs/ZmianyBonusCD.disc/assets/wav/zmiany_bonus_audio.wav"), is_linked=True)
     cd.set_tracklist(["To będzie nasz rok", "Nic", "Artysta"])
     cd.save()
-    cd.burn_cd()
+    # cd.burn_cd()
     # cd.save(disc_dir / "CD.cdisc", overwrite=False)
     # cd = DiscInstance(disc_dir/"Plyta.disc")
     # cd.save()

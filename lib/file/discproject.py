@@ -1,7 +1,5 @@
-import json
 import shutil
 from pathlib import Path
-from sys import path
 
 from lib.disc.burner import burn_iteration
 from lib.misc.configs import project_dir, disc_dir, parsed_version
